@@ -34,16 +34,16 @@
               ]"
             >
               <div class="py-1">
-                <a href="https://ldeng.cc/ip2location" class="block px-4 py-2 text-sm transition-colors duration-200" :class="[isDarkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-400']">IP2Location</a>
-                <a href="https://ldeng.cc/whois" class="block px-4 py-2 text-sm transition-colors duration-200" :class="[isDarkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-400']">Whois</a>
+                <a href="https://me.ldeng.cc/ip2location" class="block px-4 py-2 text-sm transition-colors duration-200" :class="[isDarkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-400']">IP2Location</a>
+                <a href="https://me.ldeng.cc/whois" class="block px-4 py-2 text-sm transition-colors duration-200" :class="[isDarkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-400']">Whois</a>
               </div>
             </div>
           </li>
           <li class="opacity-0 animate-fade-in" style="animation-delay: 800ms;">
-            <a href="https://ldeng.cc/bot" class="font-bold transition-colors duration-500 ease-in-out hover:text-gray-400">Discord Bot</a>
+            <a href="https://me.ldeng.cc/bot" class="font-bold transition-colors duration-500 ease-in-out hover:text-gray-400">Discord Bot</a>
           </li>
           <li class="opacity-0 animate-fade-in" style="animation-delay: 900ms;">
-            <a href="https://ldeng.cc/about" class="font-bold transition-colors duration-500 ease-in-out hover:text-gray-400">About</a>
+            <a href="https://me.ldeng.cc/about" class="font-bold transition-colors duration-500 ease-in-out hover:text-gray-400">About</a>
           </li>
         </ul>
         
@@ -89,7 +89,7 @@
       ]"
     >
       <ul class="space-y-4">
-        <li><a href="https://ldeng.cc" class="block font-bold py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-400" @click="closeMenu">Home</a></li>
+        <li><a href="https://me.ldeng.cc" class="block font-bold py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-400" @click="closeMenu">Home</a></li>
         <!-- 工具子選單 -->
         <li>
           <div class="block font-bold py-2 transition-all duration-300 cursor-pointer" @click="toggleToolsSubmenu">
@@ -101,12 +101,12 @@
             </div>
           </div>
           <div class="pl-4 mt-2 space-y-2 overflow-hidden transition-all duration-300" :class="toolsSubmenuOpen ? 'max-h-40' : 'max-h-0'">
-            <a href="https://ldeng.cc/ip2location" class="block py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-500" @click="closeMenu">IP2Location</a>
-            <a href="https://ldeng.cc/whois" class="block py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-500" @click="closeMenu">Whois</a>
+            <a href="https://me.ldeng.cc/ip2location" class="block py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-500" @click="closeMenu">IP2Location</a>
+            <a href="https://me.ldeng.cc/whois" class="block py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-500" @click="closeMenu">Whois</a>
           </div>
         </li>
-        <li><a href="https://ldeng.cc/bot" class="block font-bold py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-400" @click="closeMenu">Discord Bot</a></li>
-        <li><a href="https://ldeng.cc/about" class="block font-bold py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-400" @click="closeMenu">About</a></li>
+        <li><a href="https://me.ldeng.cc/bot" class="block font-bold py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-400" @click="closeMenu">Discord Bot</a></li>
+        <li><a href="https://me.ldeng.cc/about" class="block font-bold py-2 transition-all duration-300 transform hover:translate-x-2 hover:text-gray-400" @click="closeMenu">About</a></li>
         <!-- 移動端暗黑模式切換 -->
         <li>
           <div class="flex items-center justify-between py-1">
@@ -129,7 +129,7 @@
     </div>
     <!-- 背景內容區域 -->
     <div class="h-screen antialiased bg-cover bg-center transition-all duration-500" 
-      :style="{backgroundImage: isDarkMode ? 'url(https://i.imgur.com/gLufjrs.gif)' : 'url(https://i.imgur.com/gLufjrs.gif)'}"
+      :style="{backgroundImage: isDarkMode ? `url(${background})` : `url(${background})`}"
     >
     </div>
     <footer class="w-full text-center py-4 animate-fade-in bg-transparent absolute bottom-0 text-xs transition-all duration-500" :class="[isDarkMode ? 'text-black' : 'text-white']" style="animation-delay: 1000ms;">
@@ -141,6 +141,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useDarkModeStore } from '../store/darkMode';
+import background from '../assets/background.gif';
 
 // 暗黑模式
 const darkModeStore = useDarkModeStore();
