@@ -38,7 +38,6 @@ const handleResize = () => {
 };
 
 onMounted(() => {
-  document.title = "Time - ldeng.cc";
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', handleResize);
   updateTime();
