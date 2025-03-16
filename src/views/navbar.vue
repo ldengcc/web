@@ -12,13 +12,13 @@
       <!-- 容器 -->
       <div class="container mx-auto flex justify-between items-center px-4 md:px-0.5">
         <!-- Logo 部分 - 在所有屏幕尺寸都顯示，移到左邊 -->
-        <a href="https://ldeng.cc">
+        <a href="https://me.ldeng.cc">
           <img :src="imageSrc" alt="Banner Image" class="flex w-12 lg:w-38 h-auto animate-fade-in" />
         </a>
         <!-- 桌面導航 - 只在大屏幕顯示 -->
         <ul class="hidden lg:flex space-x-9 order-2">
           <li class="opacity-0 animate-fade-in" style="animation-delay: 600ms;">
-            <a href="https://ldeng.cc" class="font-bold transition-colors duration-500 ease-in-out hover:text-gray-400">Home</a>
+            <a href="https://me.ldeng.cc" class="font-bold transition-colors duration-500 ease-in-out hover:text-gray-400">Home</a>
           </li>
           <!-- Tools 下拉菜單 -->
           <li class="opacity-0 animate-fade-in relative group" style="animation-delay: 700ms;">
@@ -129,7 +129,7 @@
     </div>
     <!-- 背景內容區域 -->
     <div class="h-screen antialiased bg-cover bg-center transition-all duration-500" 
-      :style="{backgroundImage: isDarkMode ? `url(${background})` : `url(${background})`}"
+      :style="{backgroundImage: isDarkMode ? `url(https://i.imgur.com/gLufjrs.gif)` : `url(https://i.imgur.com/gLufjrs.gif)`}"
     >
     </div>
     <footer class="w-full text-center py-4 animate-fade-in bg-transparent absolute bottom-0 text-xs transition-all duration-500" :class="[isDarkMode ? 'text-black' : 'text-white']" style="animation-delay: 1000ms;">
@@ -141,7 +141,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useDarkModeStore } from '../store/darkMode';
-import background from '../assets/background.gif';
 
 // 暗黑模式
 const darkModeStore = useDarkModeStore();
