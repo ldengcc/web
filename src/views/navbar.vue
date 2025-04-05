@@ -129,7 +129,7 @@
     </div>
     <!-- 背景內容區域 -->
     <div class="h-screen antialiased bg-cover bg-center transition-all duration-500" 
-      :style="{backgroundImage: isDarkMode ? `url(https://i.imgur.com/gLufjrs.gif)` : `url(https://i.imgur.com/gLufjrs.gif)`}"
+      :style="{backgroundImage: isDarkMode ? `url(https://i.imgur.com/gMK1DXx.gif)` : `url(https://i.imgur.com/gMK1DXx.gif)`}"
     >
     </div>
     <footer class="w-full text-center py-4 animate-fade-in bg-transparent absolute bottom-0 text-xs transition-all duration-500" :class="[isDarkMode ? 'text-black' : 'text-white']" style="animation-delay: 1000ms;">
