@@ -127,10 +127,20 @@
         </li>
       </ul>
     </div>
-    <!-- 背景內容區域 -->
-    <div class="h-screen antialiased bg-cover bg-center transition-all duration-500" 
-      :style="{backgroundImage: isDarkMode ? `url(https://i.imgur.com/gMK1DXx.gif)` : `url(https://i.imgur.com/gMK1DXx.gif)`}"
-    >
+      <!-- 背景內容區域 -->
+      <div class="relative h-screen w-screen overflow-hidden">
+      <!-- 背景影片 -->
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        class="absolute top-0 left-0 w-full h-full object-cover z-0 transition-all duration-500"
+      >
+        <source :src="isDarkMode ? '/background.mp4' : '/background.mp4'" type="video/mp4" />
+      </video>
+
+      <!-- 你的內容區塊 -->
     </div>
     <footer class="w-full text-center py-4 animate-fade-in bg-transparent absolute bottom-0 text-xs transition-all duration-500" :class="[isDarkMode ? 'text-black' : 'text-white']" style="animation-delay: 1000ms;">
       <p>© 2025 ldeng</p>

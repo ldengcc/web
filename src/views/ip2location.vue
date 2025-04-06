@@ -1,21 +1,23 @@
 <template>
   <div class="relative min-h-screen flex justify-center items-center p-4">
     <div class="max-w-4xl w-full p-6 relative z-10">
+      
       <!-- IP 地址查詢標題 -->
-      <div class="text-white text-center p-4 rounded-xl mb-6 ">
+      <div
+        class="text-white text-center p-4 rounded-xl mb-6 transition-opacity duration-500"
+        v-if="!ipDetails || isDesktop"
+      >
         <h1 class="text-4xl font-light">IP2Location</h1>
       </div>
 
-      <!-- 輸入框和查詢按鈕 -->
+      <!-- 輸入框與按鈕 -->
       <div class="bg-transparent bg-opacity-95 shadow-lg backdrop-blur-2xl text-white flex justify-center items-center p-4 rounded-xl mb-6 space-x-4">
-        <!-- 輸入框 -->
         <input
           v-model="ipAddress"
           type="text"
           placeholder="請輸入 IP 地址"
           class="border p-2 rounded-l-xl w-3/4 focus:outline-none"
         />
-        <!-- 查詢按鈕 -->
         <button
           @click="fetchIpDetails"
           class="bg-transparent bg-opacity-95 shadow-2xl backdrop-blur-2xl text-white p-4 rounded-xl hover:bg-gray-500 transition duration-200 ease-in-out w-1/4 cursor-pointer"
@@ -25,18 +27,24 @@
         </button>
       </div>
 
-      <!-- 驗證框 -->
-      <div id="cf-turnstile" class="flex justify-center mb-6"></div>
+      <!-- CAPTCHA -->
+      <transition name="fade">
+        <div id="cf-turnstile" class="flex justify-center mb-6" v-show="!captchaToken"></div>
+      </transition>
 
-      <!-- 查詢錯誤提示 -->
+      <!-- 錯誤提示 -->
       <p v-if="error" class="text-red-500 text-center mt-2 font-bold">{{ error }}</p>
 
-      <!-- 查詢結果與地圖區域 -->
-      <div v-if="ipDetails" class="flex space-x-6">
-        <!-- 查詢結果 -->
-        <div class="bg-transparent bg-opacity-95 shadow-lg backdrop-blur-2xl p-6 rounded-xl w-2/3">
+      <!-- 結果區 -->
+      <div
+        v-if="ipDetails"
+        ref="resultSection"
+        class="flex flex-col lg:flex-row lg:space-x-6 space-y-6 lg:space-y-0 mt-6"
+      >
+        <!-- IP Detail -->
+        <div class="bg-transparent bg-opacity-95 shadow-lg backdrop-blur-2xl p-6 rounded-xl w-full lg:w-2/3">
           <h2 class="text-xl text-white font-light mb-2">IP Details</h2>
-          <ul class="space-y-1 text-white">
+          <ul class="grid grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-2 text-white text-sm">
             <li><strong>Hostname:</strong> {{ ipDetails.hostname }}</li>
             <li><strong>ASN:</strong> {{ ipDetails.asn }}</li>
             <li><strong>Organization:</strong> {{ ipDetails.organization }}</li>
@@ -48,9 +56,16 @@
           </ul>
         </div>
 
-        <!-- 地圖位置 -->
-        <div class="bg-transparent bg-opacity-95 shadow-lg backdrop-blur-2xl p-4 rounded-xl w-1/3">
-          <div id="map" class="h-full w-full rounded-xl"></div>
+        <!-- 地圖 -->
+        <div
+          class="bg-transparent bg-opacity-95 shadow-lg backdrop-blur-2xl p-4 rounded-xl w-full lg:w-1/3"
+          :class="isMobile ? 'h-48' : 'h-full'"
+        >
+        <div
+          id="map"
+          :style="{ height: isMobile ? '100px' : '300px' }"
+          class="w-full rounded-xl"
+        ></div>
         </div>
       </div>
     </div>
@@ -58,24 +73,27 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed, nextTick } from 'vue';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const ipAddress = ref('');
 const ipDetails = ref(null);
 const isLoading = ref(false);
-const isVerifying = ref(false);
 const error = ref('');
+const captchaToken = ref('');
 const map = ref(null);
 const marker = ref(null);
-const captchaToken = ref('');
+const resultSection = ref(null);
 
 const API_KEY = 'ira_CCESZRqwPhBK7woh7RhkER2FpW0kMJ48fTiX';
 
+const isMobile = computed(() => window.innerWidth < 1024);
+const isDesktop = computed(() => window.innerWidth >= 1024);
+
 const initCaptcha = () => {
   const el = document.getElementById('cf-turnstile');
-  if (el) el.innerHTML = ''; // 清除舊的驗證框
+  if (el) el.innerHTML = '';
 
   if (window.turnstile) {
     window.turnstile.render('#cf-turnstile', {
@@ -90,15 +108,21 @@ const initCaptcha = () => {
 
 onMounted(() => {
   initCaptcha();
+  window.addEventListener('resize', updateScreen);
 });
 
 onBeforeUnmount(() => {
   captchaToken.value = '';
+  window.removeEventListener('resize', updateScreen);
 });
 
-const convertIpToDecimal = (ip) => {
-  return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0);
+const updateScreen = () => {
+  // 觸發 re-computed
+  window.innerWidth;
 };
+
+const convertIpToDecimal = (ip) =>
+  ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0);
 
 const fetchIpDetails = async () => {
   if (!ipAddress.value) {
@@ -108,7 +132,7 @@ const fetchIpDetails = async () => {
 
   if (!captchaToken.value) {
     error.value = '請先完成機器人驗證';
-    initCaptcha(); // 重新初始化 captcha
+    initCaptcha();
     return;
   }
 
@@ -139,53 +163,51 @@ const fetchIpDetails = async () => {
       timezone: data.time_zone?.id || 'N/A'
     };
 
-    setTimeout(() => {
-      initMap();
-    }, 100);
+    await nextTick();
+    initMap();
+    scrollToResult();
   } catch (err) {
     error.value = err.message || '獲取 IP 詳細資訊時發生錯誤';
-    console.error('獲取 IP 詳細資訊時發生錯誤:', err);
+    console.error('錯誤:', err);
   } finally {
     isLoading.value = false;
   }
 };
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
-  iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
-  shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href,
-});
-
 const initMap = () => {
   if (!ipDetails.value) return;
 
-  const lat = ipDetails.value.latitude;
-  const lng = ipDetails.value.longitude;
-
+  const { latitude, longitude } = ipDetails.value;
   const mapContainer = document.getElementById('map');
-  if (!mapContainer) return;
 
-  // 銷毀舊地圖並清空 DOM
   if (map.value) {
     map.value.remove();
-    map.value = null;
     mapContainer.innerHTML = '';
   }
 
-  map.value = L.map(mapContainer).setView([lat, lng], 10);
-
+  map.value = L.map(mapContainer).setView([latitude, longitude], 10);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap 貢獻者'
   }).addTo(map.value);
 
-  marker.value = L.marker([lat, lng]).addTo(map.value);
+  marker.value = L.marker([latitude, longitude]).addTo(map.value);
+};
+
+const scrollToResult = () => {
+  if (resultSection.value) {
+    resultSection.value.scrollIntoView({ behavior: 'smooth' });
+  }
 };
 </script>
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
 #map {
-  height: 100%;
-  width: 100%;
+  min-height: 200px;
 }
 </style>
