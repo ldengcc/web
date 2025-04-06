@@ -150,6 +150,13 @@ const fetchIpDetails = async () => {
   }
 };
 
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
+  iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
+  shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href,
+});
+
 const initMap = () => {
   if (!ipDetails.value) return;
 
@@ -180,124 +187,5 @@ const initMap = () => {
 #map {
   height: 100%;
   width: 100%;
-}
-
-.bg-yellow-100 {
-  background-color: rgba(255, 255, 0, 0.1);
-}
-
-.bg-opacity-50 {
-  opacity: 0.5;
-}
-
-.backdrop-blur-md {
-  backdrop-filter: blur(10px);
-}
-
-.bg-red-600 {
-  background-color: #f56565;
-}
-
-.bg-blue-600 {
-  background-color: #4299e1;
-}
-
-.bg-green-600 {
-  background-color: #48bb78;
-}
-
-.rounded-xl {
-  border-radius: 1rem;
-}
-
-.p-4 {
-  padding: 1rem;
-}
-
-.text-white {
-  color: white;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.flex {
-  display: flex;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.max-w-4xl {
-  max-width: 56rem;
-}
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
-
-.space-x-6 {
-  margin-left: -1.5rem;
-  margin-right: -1.5rem;
-}
-
-.space-x-4 {
-  margin-left: -1rem;
-  margin-right: -1rem;
-}
-
-.focus\:outline-none {
-  outline: none;
-}
-
-.focus\:ring-2 {
-  ring-width: 2px;
-}
-
-.focus\:ring-blue-300 {
-  ring-color: #93c5fd;
-}
-
-.hover\:bg-blue-700 {
-  background-color: #3182ce;
-}
-
-.active\:bg-blue-800 {
-  background-color: #2b6cb0;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.transition {
-  transition: all 0.2s ease-in-out;
-}
-
-.duration-200 {
-  transition-duration: 200ms;
-}
-
-.ease-in-out {
-  transition-timing-function: ease-in-out;
 }
 </style>
