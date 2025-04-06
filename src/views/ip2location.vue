@@ -39,7 +39,7 @@
       <div
         v-if="ipDetails"
         ref="resultSection"
-        class="flex flex-col lg:flex-row lg:space-x-6 space-y-6 lg:space-y-0 mt-6"
+        class="flex flex-col lg:flex-row lg:space-x-6 space-y-5 lg:space-y-0 mt-6"
       >
         <!-- IP Detail -->
         <div class="bg-transparent bg-opacity-95 shadow-lg backdrop-blur-2xl p-6 rounded-xl w-full lg:w-2/3">
@@ -173,6 +173,14 @@ const fetchIpDetails = async () => {
     isLoading.value = false;
   }
 };
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
+});
 
 const initMap = () => {
   if (!ipDetails.value) return;

@@ -130,15 +130,10 @@
       <!-- 背景內容區域 -->
       <div class="relative h-screen w-screen overflow-hidden">
       <!-- 背景影片 -->
-      <video
-        autoplay
-        muted
-        loop
-        playsinline
-        class="absolute top-0 left-0 w-full h-full object-cover z-0 transition-all duration-500"
-      >
-        <source :src="isDarkMode ? '/background.mp4' : '/background.mp4'" type="video/mp4" />
-      </video>
+    <video autoplay muted loop class="absolute top-0 left-0 w-full h-full object-cover z-0">
+      <source src="/background.mp4" type="video/mp4" />
+    </video>
+
 
       <!-- 你的內容區塊 -->
     </div>
