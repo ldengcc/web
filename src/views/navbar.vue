@@ -131,7 +131,7 @@
       <div class="relative h-screen w-screen overflow-hidden">
       <!-- 背景影片 -->
     <video autoplay muted loop class="absolute top-0 left-0 w-full h-full object-cover z-0">
-      <source src="/background.mp4" type="video/mp4" />
+      <source src="https://pub-e2d57f1aa2fc4c6b80c160952cff9b95.r2.dev/background.mp4" type="video/mp4" />
     </video>
 
 
