@@ -87,7 +87,6 @@ const error = ref('');
 const captchaToken = ref('');
 const resultSection = ref(null);
 
-const API_KEY = '88543F016CC43723E562294BA374BBD0'; // 替換為你的 IP2WHOIS API KEY
 
 const isMobile = computed(() => window.innerWidth < 1024);
 const isDesktop = computed(() => window.innerWidth >= 1024);
@@ -136,9 +135,8 @@ const fetchDomainDetails = async () => {
 
   error.value = '';
   isLoading.value = true;
-
+  // 調用Workers
   try {
-    // 使用你的Worker URL代替直接API調用
     const workerUrl = 'https://whois.james941024.workers.dev/?domain=' + encodeURIComponent(domainName.value);
     const response = await fetch(workerUrl);
     
